@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EquipSync – Intelligent Shared Equipment Booking System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
+    
+    <!-- Navbar -->
+    <nav id="navbar" class="hidden sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center gap-4">
+            <button id="nav-back-btn" class="hidden p-2 -ml-2 text-gray-600 hover:text-teal-600 transition-colors rounded-full hover:bg-gray-100">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <div class="font-bold text-2xl text-teal-600 font-poppins cursor-pointer flex items-center gap-2" onclick="window.navigateTo('landing')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              EquipSync
+            </div>
+          </div>
+          <div class="flex items-center gap-6">
+            <button class="text-gray-600 hover:text-teal-600 font-medium transition-colors hidden sm:block" onclick="window.navigateTo('landing')">Home</button>
+            <button class="text-gray-600 hover:text-teal-600 font-medium transition-colors hidden sm:block" onclick="window.navigateTo('listing')">Browse</button>
+            <button id="nav-signin-btn" class="bg-teal-600 text-white px-5 py-2 rounded-full font-medium hover:bg-teal-700 transition-colors shadow-md shadow-teal-600/20" onclick="window.navigateTo('signin')">Sign In</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="app" class="flex-grow">
+
+      <!-- Sign In Page -->
+      <section id="signin-page" class="page-section hidden min-h-screen flex flex-col justify-center items-center p-4 bg-gray-50">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 w-full max-w-md">
+          <div class="text-center mb-8">
+             <div class="inline-flex p-3 bg-teal-50 rounded-full mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
+             </div>
+             <h2 class="text-2xl font-bold font-poppins text-gray-900">Welcome Back</h2>
+             <p class="text-gray-500 mt-2">Sign in to access your account</p>
+          </div>
+          
+          <form id="signin-form" onsubmit="return false;" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+              <input type="email" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="john@example.com">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <input type="password" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="••••••••">
+            </div>
+            
+            <div class="flex justify-between items-center text-sm">
+              <label class="flex items-center text-gray-600">
+                <input type="checkbox" class="mr-2 rounded border-gray-300 text-teal-600 focus:ring-teal-500"> Remember me
+              </label>
+              <a href="#" class="text-teal-600 hover:underline font-medium">Forgot password?</a>
+            </div>
+
+            <button type="submit" id="signin-submit-btn" class="w-full bg-teal-600 text-white py-3 rounded-xl font-semibold shadow-lg shadow-teal-600/30 hover:bg-teal-700 transition-colors mt-4">
+              Sign In
+            </button>
+          </form>
+          
+          <div class="mt-6 text-center text-sm text-gray-500">
+            Don't have an account? <a href="#" class="text-teal-600 font-semibold hover:underline">Sign up</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 1) Landing Page -->
+      <section id="landing-page" class="page-section min-h-screen flex flex-col justify-center items-center p-8 text-center bg-gradient-to-br from-teal-50 via-emerald-50 to-white relative overflow-hidden">
+        <!-- Background decorative elements -->
+        <div class="absolute top-20 left-20 w-72 h-72 bg-teal-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
+        <div class="absolute top-20 right-20 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-8 left-1/2 w-72 h-72 bg-cyan-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto">
+          <div class="mb-8 inline-flex p-5 bg-white rounded-3xl shadow-xl rotate-3 transform transition-transform hover:rotate-0">
+             <!-- New Aesthetic Logo -->
+             <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <h1 class="text-5xl md:text-7xl font-bold text-gray-900 font-poppins mb-6 tracking-tight leading-tight">
+            Equip<span class="text-teal-600">Sync</span>
+          </h1>
+          <p class="text-xl md:text-2xl text-gray-600 mb-10 leading-relaxed max-w-3xl mx-auto font-light">
+            From professional photography gear to heavy construction machinery, book what you need instantly with flexible dates.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <button id="browse-btn" class="bg-teal-600 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg shadow-teal-600/30 hover:bg-teal-700 hover:shadow-teal-600/40 transition-all transform hover:-translate-y-1 active:translate-y-0">
+              Browse Equipment
+            </button>
+            <button id="list-item-btn" class="bg-white text-gray-700 border border-gray-200 px-8 py-4 rounded-xl font-semibold text-lg shadow-sm hover:bg-gray-50 transition-all" onclick="window.navigateTo('add-equipment')">
+              Add your Tools for rent
+            </button>
+            <button id="history-btn" class="bg-indigo-600 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg shadow-indigo-600/30 hover:bg-indigo-700 hover:shadow-indigo-600/40 transition-all transform hover:-translate-y-1 active:translate-y-0" onclick="window.navigateTo('history')">
+              Booking History
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8) Booking History Page -->
+      <section id="booking-history-page" class="page-section hidden max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex items-center gap-4 mb-8">
+           <button id="history-back-btn" class="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-full transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+           </button>
+           <h2 class="text-3xl font-bold font-poppins text-gray-900">Booking History</h2>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+          <!-- Mock History List -->
+          <div class="divide-y divide-gray-100">
+            <!-- Item 1 -->
+            <div class="p-6 flex flex-col md:flex-row items-center gap-6 bg-blue-50 border-b border-blue-100 hover:bg-blue-100 transition-colors">
+              <div class="w-full md:w-24 h-24 bg-white rounded-xl overflow-hidden shrink-0 border border-blue-100">
+                <img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=800&q=80" alt="Power Drill" class="w-full h-full object-cover">
+              </div>
+              <div class="flex-1 text-center md:text-left">
+                <div class="flex flex-col md:flex-row md:items-center gap-2 mb-1">
+                  <h3 class="font-bold text-gray-900 text-lg">Power Drill</h3>
+                  <span class="px-2.5 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-bold uppercase tracking-wide w-fit mx-auto md:mx-0">Completed</span>
+                </div>
+                <p class="text-gray-500 text-sm mb-1">Booking ID: <span class="font-mono text-gray-700">BK-9281</span></p>
+                <p class="text-gray-500 text-sm">Feb 10, 2026 - Feb 12, 2026</p>
+              </div>
+              <div class="text-center md:text-right">
+                <p class="text-lg font-bold text-teal-600 mb-3">₹2,400</p>
+                <button class="download-receipt-btn flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-teal-600 transition-colors shadow-sm mx-auto md:mx-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                  Download Receipt
+                </button>
+              </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="p-6 flex flex-col md:flex-row items-center gap-6 bg-blue-50 hover:bg-blue-100 transition-colors">
+              <div class="w-full md:w-24 h-24 bg-white rounded-xl overflow-hidden shrink-0 border border-blue-100">
+                <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80" alt="DSLR Camera Kit" class="w-full h-full object-cover">
+              </div>
+              <div class="flex-1 text-center md:text-left">
+                <div class="flex flex-col md:flex-row md:items-center gap-2 mb-1">
+                  <h3 class="font-bold text-gray-900 text-lg">DSLR Camera Kit</h3>
+                  <span class="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-wide w-fit mx-auto md:mx-0">Active</span>
+                </div>
+                <p class="text-gray-500 text-sm mb-1">Booking ID: <span class="font-mono text-gray-700">BK-3342</span></p>
+                <p class="text-gray-500 text-sm">Feb 28, 2026 - Mar 05, 2026</p>
+              </div>
+              <div class="text-center md:text-right">
+                <p class="text-lg font-bold text-teal-600 mb-3">₹7,500</p>
+                <button class="download-receipt-btn flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-teal-600 transition-colors shadow-sm mx-auto md:mx-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                  Download Receipt
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7) Add Equipment Page -->
+      <section id="add-equipment-page" class="page-section hidden max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex items-center gap-4 mb-8">
+           <button id="add-back-btn" class="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-full transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+           </button>
+           <h2 class="text-3xl font-bold font-poppins text-gray-900">List Your Equipment</h2>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 md:p-10">
+          <form id="add-equipment-form" onsubmit="return false;">
+            <div class="space-y-6 mb-8">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Equipment Name</label>
+                <input type="text" id="add-name" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="e.g. Professional DSLR Camera">
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <select id="add-category" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow">
+                    <option value="Tools">Tools</option>
+                    <option value="Photography">Photography</option>
+                    <option value="Construction">Construction</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Event Equipment">Event Equipment</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Daily Rental Price (₹)</label>
+                  <input type="number" id="add-price" required min="0" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="e.g. 500">
+                </div>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <textarea id="add-description" required rows="4" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="Describe the condition, features, and included accessories..."></textarea>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
+                <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:bg-gray-50 transition-colors cursor-pointer group">
+                  <div class="bg-teal-50 text-teal-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-teal-100 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                  </div>
+                  <span class="text-sm text-gray-600 font-medium">Click to upload image</span>
+                  <span class="block text-xs text-gray-400 mt-1">PNG, JPG up to 5MB</span>
+                </div>
+              </div>
+            </div>
+
+            <button id="submit-equipment-btn" class="w-full bg-teal-600 text-white py-4 rounded-xl font-semibold text-lg shadow-lg shadow-teal-600/30 hover:bg-teal-700 transition-colors">
+              List Equipment
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- 2) Equipment Listing Page -->
+      <section id="listing-page" class="page-section hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+          <div>
+            <h2 class="text-3xl font-bold font-poppins text-gray-900">Find Equipment</h2>
+            <p class="text-gray-500 mt-1">Explore our vast collection of professional tools.</p>
+          </div>
+          
+          <div class="flex flex-col sm:flex-row gap-4 items-center w-full md:w-auto">
+             <div class="relative w-full sm:w-64">
+                <input type="text" id="search-equipment" placeholder="Search equipment..." class="w-full pl-10 pr-4 py-2.5 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-3 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+             </div>
+
+             <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar max-w-full" id="category-filters">
+               <button class="filter-btn active whitespace-nowrap px-5 py-2.5 rounded-full bg-white border border-gray-200 text-gray-600 text-sm font-medium hover:bg-teal-50 hover:text-teal-600 hover:border-teal-200 transition-all shadow-sm" data-category="All">All</button>
+               <button class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-full bg-white border border-gray-200 text-gray-600 text-sm font-medium hover:bg-teal-50 hover:text-teal-600 hover:border-teal-200 transition-all shadow-sm" data-category="Tools">Tools</button>
+               <button class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-full bg-white border border-gray-200 text-gray-600 text-sm font-medium hover:bg-teal-50 hover:text-teal-600 hover:border-teal-200 transition-all shadow-sm" data-category="Photography">Photography</button>
+               <button class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-full bg-white border border-gray-200 text-gray-600 text-sm font-medium hover:bg-teal-50 hover:text-teal-600 hover:border-teal-200 transition-all shadow-sm" data-category="Construction">Construction</button>
+               <button class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-full bg-white border border-gray-200 text-gray-600 text-sm font-medium hover:bg-teal-50 hover:text-teal-600 hover:border-teal-200 transition-all shadow-sm" data-category="Electronics">Electronics</button>
+               <button class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-full bg-white border border-gray-200 text-gray-600 text-sm font-medium hover:bg-teal-50 hover:text-teal-600 hover:border-teal-200 transition-all shadow-sm" data-category="Event Equipment">Event</button>
+               <button class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-full bg-white border border-gray-200 text-gray-600 text-sm font-medium hover:bg-teal-50 hover:text-teal-600 hover:border-teal-200 transition-all shadow-sm" data-category="Engineering">Engineering</button>
+             </div>
+          </div>
+        </div>
+        
+        <div id="equipment-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <!-- Items injected here by JS -->
+        </div>
+      </section>
+
+      <!-- 3) Equipment Detail Page -->
+      <section id="detail-page" class="page-section hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
+          <div class="relative bg-gray-100 h-96 lg:h-auto">
+            <img id="detail-image" src="" alt="Equipment" class="w-full h-full object-cover">
+            <div class="absolute top-6 left-6">
+               <button id="detail-back-btn" class="bg-white/90 backdrop-blur p-3 rounded-full shadow-md hover:bg-white transition-colors text-gray-700 hover:text-teal-600">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+            </div>
+          </div>
+          
+          <div class="p-8 lg:p-12 flex flex-col justify-center">
+            <div class="mb-2">
+               <span id="detail-category" class="px-3 py-1 rounded-full bg-teal-50 text-teal-600 text-xs font-bold uppercase tracking-wider">Category</span>
+            </div>
+            <h2 id="detail-name" class="text-4xl font-bold font-poppins text-gray-900 mb-4">Equipment Name</h2>
+            <div class="flex items-baseline gap-2 mb-8">
+              <span id="detail-price" class="text-3xl font-bold text-teal-600">₹0</span>
+              <span class="text-lg text-gray-500">/day</span>
+            </div>
+            
+            <div class="my-6 h-px bg-gray-100 w-full"></div>
+            
+            <h3 class="font-semibold text-gray-900 mb-3 text-lg">Description</h3>
+            <p id="detail-description" class="text-gray-600 leading-relaxed mb-10 text-lg">
+              Description goes here...
+            </p>
+            
+            <div class="mt-auto">
+              <button id="select-dates-btn" class="w-full sm:w-auto px-12 bg-teal-600 text-white py-4 rounded-xl font-semibold text-lg shadow-lg shadow-teal-600/30 hover:bg-teal-700 hover:shadow-teal-600/40 transition-all transform hover:-translate-y-0.5">
+                Select Rental Dates
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4) Booking Page -->
+      <section id="booking-page" class="page-section hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex items-center gap-4 mb-8">
+           <button id="booking-back-btn" class="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-full transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+           </button>
+           <h2 class="text-3xl font-bold font-poppins text-gray-900">Book Equipment</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          <!-- Left Column: Form -->
+          <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+             <form id="booking-form" onsubmit="return false;">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                  <input type="date" id="start-date" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+                  <input type="date" id="end-date" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow">
+                </div>
+              </div>
+              
+              <div id="date-conflict-msg" class="hidden mb-8 p-4 bg-red-50 text-red-700 text-sm rounded-xl border border-red-100 flex items-start gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+                <div>
+                  <span class="font-bold block text-base mb-1">Date Conflict Detected</span>
+                  This equipment is already booked for the selected dates. <button type="button" id="suggest-date-btn" class="underline font-semibold hover:text-red-900 ml-1">Try +1 day</button>
+                </div>
+              </div>
+
+              <div class="mb-8">
+                <label class="block text-sm font-medium text-gray-700 mb-3">Delivery Option</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <label class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors has-[:checked]:border-teal-500 has-[:checked]:bg-teal-50 has-[:checked]:ring-1 has-[:checked]:ring-teal-500">
+                    <input type="radio" name="delivery" value="pickup" checked class="w-5 h-5 text-teal-600 border-gray-300 focus:ring-teal-500">
+                    <div class="ml-3">
+                      <span class="block font-medium text-gray-900">Pickup from Owner</span>
+                      <span class="block text-sm text-green-600 font-medium">Free</span>
+                    </div>
+                  </label>
+                  <label class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors has-[:checked]:border-teal-500 has-[:checked]:bg-teal-50 has-[:checked]:ring-1 has-[:checked]:ring-teal-500">
+                    <input type="radio" name="delivery" value="delivery" class="w-5 h-5 text-teal-600 border-gray-300 focus:ring-teal-500">
+                    <div class="ml-3">
+                      <span class="block font-medium text-gray-900">Doorstep Delivery</span>
+                      <span class="block text-sm text-gray-500">Free &lt; 4km, else ₹100</span>
+                    </div>
+                  </label>
+                </div>
+                
+                <!-- Distance Input (Hidden by default) -->
+                <div id="delivery-distance-container" class="hidden mt-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Distance from Owner (km)</label>
+                  <input type="number" id="delivery-distance" min="0" step="0.1" class="w-full p-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="e.g. 3.5">
+                  <p class="text-xs text-gray-500 mt-2">Delivery is free for distances under 4km.</p>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Right Column: Summary -->
+          <div class="lg:col-span-1">
+             <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-24">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">Booking Summary</h3>
+                
+                <div class="flex gap-4 items-center mb-6 pb-6 border-b border-gray-100">
+                  <img id="booking-item-image" src="" alt="" class="w-20 h-20 rounded-lg object-cover bg-gray-100">
+                  <div>
+                    <h4 id="booking-item-name" class="font-semibold text-gray-900">Item Name</h4>
+                    <p id="booking-item-price" class="text-sm text-teal-600 font-medium">₹0/day</p>
+                  </div>
+                </div>
+
+                <div class="space-y-3 mb-6">
+                  <div class="flex justify-between text-gray-600">
+                    <span>Duration</span>
+                    <span id="summary-days" class="font-medium">0 days</span>
+                  </div>
+                  <div class="flex justify-between text-gray-600">
+                    <span>Rental Cost</span>
+                    <span id="summary-rental" class="font-medium">₹0</span>
+                  </div>
+                  <div class="flex justify-between text-gray-600">
+                    <span>Delivery Fee</span>
+                    <span id="summary-delivery" class="font-medium">₹0</span>
+                  </div>
+                </div>
+                
+                <div class="border-t border-gray-200 pt-4 flex justify-between items-center mb-6">
+                  <span class="text-gray-900 font-bold">Total Amount</span>
+                  <span id="summary-total" class="text-2xl font-bold text-teal-600">₹0</span>
+                </div>
+
+                <button id="proceed-details-btn" disabled class="w-full bg-teal-600 text-white py-4 rounded-xl font-semibold shadow-lg shadow-teal-600/30 hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none">
+                  Proceed to Checkout
+                </button>
+             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5) User Details Form Page -->
+      <section id="user-details-page" class="page-section hidden max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex items-center gap-4 mb-8">
+           <button id="details-back-btn" class="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-full transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+           </button>
+           <h2 class="text-3xl font-bold font-poppins text-gray-900">Checkout Details</h2>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 md:p-10">
+          <form id="user-form" onsubmit="return false;">
+            <div class="space-y-6 mb-8">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                  <input type="text" id="user-name" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="John Doe">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                  <input type="email" id="user-email" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="john@example.com">
+                </div>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                <input type="tel" id="user-phone" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="+91 98765 43210">
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Delivery Address</label>
+                <textarea id="user-address" required rows="3" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="Street, Apartment, etc."></textarea>
+              </div>
+              
+              <div class="grid grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">City</label>
+                  <input type="text" id="user-city" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="Mumbai">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Pincode</label>
+                  <input type="text" id="user-pincode" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow" placeholder="400001">
+                </div>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">ID Proof (Optional)</label>
+                <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:bg-gray-50 transition-colors cursor-pointer group">
+                  <div class="bg-teal-50 text-teal-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-teal-100 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                  </div>
+                  <span class="text-sm text-gray-600 font-medium">Click to upload ID</span>
+                  <span class="block text-xs text-gray-400 mt-1">PNG, JPG up to 5MB</span>
+                </div>
+              </div>
+            </div>
+
+            <button id="confirm-booking-btn" class="w-full bg-teal-600 text-white py-4 rounded-xl font-semibold text-lg shadow-lg shadow-teal-600/30 hover:bg-teal-700 transition-colors">
+              Confirm Booking
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- 6) Confirmation Page -->
+      <section id="confirmation-page" class="page-section hidden max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-10">
+          <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-8 mx-auto animate-bounce">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+          
+          <h2 class="text-3xl font-bold font-poppins text-gray-900 mb-4">Booking Confirmed!</h2>
+          <p class="text-gray-600 mb-10 text-lg">Your equipment has been successfully booked. A confirmation email has been sent to you.</p>
+          
+          <div class="bg-gray-50 rounded-2xl p-8 w-full text-left border border-gray-200 shadow-sm mb-10">
+            <div class="flex justify-between items-center mb-6 pb-6 border-b border-gray-200">
+              <span class="text-sm text-gray-500 uppercase tracking-wider font-semibold">Booking ID</span>
+              <span id="conf-id" class="font-mono font-bold text-xl text-gray-900">BK-0000</span>
+            </div>
+            
+            <div class="space-y-4 text-base">
+              <div class="flex justify-between">
+                <span class="text-gray-500">Equipment</span>
+                <span id="conf-item" class="font-medium text-gray-900 text-right">Item Name</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-500">Dates</span>
+                <span id="conf-dates" class="font-medium text-gray-900 text-right">Mar 1 - Mar 3</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-500">Delivery</span>
+                <span id="conf-delivery" class="font-medium text-gray-900 text-right">Pickup</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-500">Customer</span>
+                <span id="conf-name" class="font-medium text-gray-900 text-right">John Doe</span>
+              </div>
+              <div class="flex justify-between pt-4 border-t border-gray-200 mt-4">
+                <span class="text-gray-900 font-bold text-lg">Total Paid</span>
+                <span id="conf-total" class="text-teal-600 font-bold text-2xl">₹0</span>
+              </div>
+            </div>
+          </div>
+          
+          <button id="home-btn" class="bg-gray-900 text-white px-10 py-4 rounded-xl font-semibold text-lg shadow-lg hover:bg-gray-800 transition-colors w-full sm:w-auto">
+            Back to Home
+          </button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-8 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
+        <p>&copy; 2026 EquipSync. All rights reserved.</p>
+        <p id="footer-warning" class="mt-2 text-red-600 font-bold text-base uppercase tracking-wide">Any damage to the equipment will result in a penalty charge.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
+
